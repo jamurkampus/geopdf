@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BorneoGIS PDF Map — Elite Edition by Lamri</title>
+<meta name="description" content="Aplikasi Android profesional untuk membuka dan menavigasi peta GeoPDF secara offline dengan GPS real-time. Alternatif Avenza Maps untuk survei lapangan di Kalimantan.">
+<meta property="og:title" content="BorneoGIS PDF Map — Elite Edition">
+<meta property="og:description" content="Professional Offline GeoPDF Viewer. GPS real-time. 100% offline. Gratis.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green-900: #0A1A14;
+    --green-800: #0F2219;
+    --green-700: #1A3D2B;
+    --green-600: #1A7F5A;
+    --green-500: #23A876;
+    --green-400: #2ECC8F;
+    --teal-400: #00D4A3;
+    --teal-300: #33DDBF;
+    --text-primary: #E8F5F0;
+    --text-sub: #8BADA1;
+    --border: #1F3529;
+    --card: #111A16;
+    --red: #E74C3C;
+    --yellow: #F39C12;
+    --blue: #2980B9;
+    --font: 'Space Grotesk', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--green-900);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,15,13,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-icon {
+    width: 32px; height: 32px;
+    background: var(--green-600);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .nav-name {
+    font-size: 15px; font-weight: 700;
+    color: var(--text-primary);
+  }
+  .nav-name span { color: var(--teal-400); }
+  .nav-links {
+    display: flex; gap: 24px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-sub); text-decoration: none; font-size: 13.5px; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--teal-400); }
+  .nav-cta {
+    background: var(--green-600);
+    color: #fff !important;
+    padding: 7px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--green-500) !important; color: #fff !important; }
+
+  /* HERO */
+  .hero {
+    padding: 140px 24px 80px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(26,127,90,0.15);
+    border: 1px solid rgba(26,127,90,0.35);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 600;
+    color: var(--teal-400);
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+  .badge-dot {
+    width: 7px; height: 7px;
+    background: var(--teal-400);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero h1 {
+    font-size: clamp(34px, 7vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+  .hero h1 .brand { color: var(--teal-400); }
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--text-sub);
+    margin: 16px auto 36px;
+    max-width: 540px;
+    line-height: 1.6;
+  }
+  .hero-buttons {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 52px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green-600);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    border: none; cursor: pointer;
+    transition: background .2s, transform .1s;
+  }
+  .btn-primary:hover { background: var(--green-500); transform: translateY(-1px); }
+  .btn-primary svg { width: 18px; height: 18px; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--text-primary);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px; font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color .2s, background .2s;
+  }
+  .btn-secondary:hover { border-color: var(--teal-400); background: rgba(0,212,163,0.05); }
+
+  /* Hero stats */
+  .hero-stats {
+    display: flex; gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card);
+    max-width: 500px; margin: 0 auto;
+  }
+  .stat {
+    flex: 1; padding: 18px 16px; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 24px; font-weight: 700; color: var(--teal-400); }
+  .stat-label { font-size: 11px; color: var(--text-sub); margin-top: 2px; font-weight: 500; letter-spacing: 0.3px; }
+
+  /* SECTION COMMON */
+  section { padding: 80px 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    color: var(--green-400); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .section-desc {
+    font-size: 15px; color: var(--text-sub); max-width: 560px; line-height: 1.7;
+  }
+
+  /* FEATURES */
+  #features { background: var(--green-800); }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: border-color .2s, transform .2s;
+  }
+  .feature-card:hover { border-color: var(--green-600); transform: translateY(-2px); }
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: rgba(26,127,90,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .feature-card p { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+  /* GPS PANEL PREVIEW */
+  #screenshots { background: var(--green-900); }
+  .screen-preview {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .mockup-phone {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .mockup-topbar {
+    background: var(--green-800);
+    padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .mockup-brand {
+    font-size: 12px; font-weight: 700; color: var(--text-primary);
+  }
+  .mockup-brand span { color: var(--teal-400); font-size: 10px; }
+  .mockup-map {
+    height: 280px;
+    background:
+      linear-gradient(135deg, rgba(26,127,90,0.08) 25%, transparent 25%) -10px 0,
+      linear-gradient(225deg, rgba(26,127,90,0.08) 25%, transparent 25%) -10px 0,
+      linear-gradient(315deg, rgba(26,127,90,0.08) 25%, transparent 25%),
+      linear-gradient(45deg, rgba(26,127,90,0.08) 25%, transparent 25%);
+    background-size: 20px 20px;
+    background-color: #0D1810;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .map-grid-label {
+    position: absolute; font-size: 10px; color: rgba(0,212,163,0.3);
+    font-family: var(--mono);
+  }
+  .crosshair {
+    position: relative; width: 40px; height: 40px;
+  }
+  .crosshair::before, .crosshair::after {
+    content: ''; position: absolute; background: var(--teal-400);
+    opacity: 0.9;
+  }
+  .crosshair::before { width: 1.5px; height: 40px; left: 50%; top: 0; margin-left: -0.75px; }
+  .crosshair::after { height: 1.5px; width: 40px; top: 50%; left: 0; margin-top: -0.75px; }
+  .gps-dot {
+    position: absolute; top: 38%; left: 52%;
+    width: 14px; height: 14px;
+    border: 2px solid var(--green-400);
+    border-radius: 50%;
+    background: rgba(46,204,143,0.25);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gps-dot-inner { width: 5px; height: 5px; background: var(--green-400); border-radius: 50%; }
+  .compass-mockup {
+    position: absolute; top: 12px; right: 12px;
+    width: 36px; height: 36px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 800; color: var(--red);
+  }
+  .gps-panel-mock {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 12px;
+  }
+  .gps-panel-handle {
+    width: 32px; height: 3px; background: rgba(255,255,255,0.15);
+    border-radius: 2px; margin: 0 auto 10px;
+  }
+  .gps-status-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .gps-dot-green { width: 7px; height: 7px; background: var(--green-400); border-radius: 50%; }
+  .gps-status-text { font-size: 10px; color: var(--green-400); font-weight: 700; }
+  .gps-accuracy { margin-left: auto; font-size: 10px; font-weight: 700; color: var(--green-400); }
+  .coord-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  }
+  .coord-cell {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 8px;
+  }
+  .coord-label { font-size: 8px; color: var(--text-sub); font-weight: 700; letter-spacing: 0.5px; }
+  .coord-value { font-size: 10px; font-family: var(--mono); color: var(--text-primary); font-weight: 700; margin-top: 2px; }
+
+  /* Coord description */
+  .coord-desc { padding-top: 8px; }
+  .coord-desc h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .coord-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .coord-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; color: var(--text-sub); line-height: 1.5;
+  }
+  .coord-list .icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: rgba(26,127,90,0.15); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .coord-list strong { color: var(--text-primary); display: block; font-size: 13px; margin-bottom: 1px; }
+
+  /* DOWNLOAD */
+  #download { background: var(--green-800); }
+  .download-box {
+    background: linear-gradient(135deg, var(--green-700), var(--green-600));
+    border-radius: 20px;
+    padding: 52px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-top: 48px;
+  }
+  .download-box::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(0,212,163,0.15), transparent 70%);
+    border-radius: 50%;
+  }
+  .download-box h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
+  .download-box p { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .download-meta {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.6);
+  }
+  .download-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* DOCUMENTATION */
+  #docs { background: var(--green-900); }
+  .docs-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin-top: 48px;
+  }
+  .doc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    transition: border-color .2s;
+    display: block;
+  }
+  .doc-card:hover { border-color: var(--green-600); }
+  .doc-card-icon { font-size: 24px; margin-bottom: 12px; }
+  .doc-card h3 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+  .doc-card p { font-size: 12.5px; color: var(--text-sub); line-height: 1.6; }
+
+  /* FAQ */
+  #faq { background: var(--green-800); }
+  .faq-list { margin-top: 40px; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .faq-q {
+    width: 100%; text-align: left;
+    background: none; border: none; cursor: pointer;
+    padding: 18px 20px;
+    font-family: var(--font); font-size: 14px; font-weight: 600;
+    color: var(--text-primary);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .faq-q:hover { color: var(--teal-400); }
+  .faq-q-arrow { font-size: 18px; transition: transform .25s; flex-shrink: 0; }
+  .faq-item.open .faq-q-arrow { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height .3s ease, padding .3s;
+    padding: 0 20px;
+    font-size: 13.5px; color: var(--text-sub); line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
+
+  /* ABOUT */
+  #about { background: var(--green-900); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 48px; }
+  .about-text h2 { font-size: 28px; font-weight: 700; margin-bottom: 14px; }
+  .about-text p { font-size: 14px; color: var(--text-sub); line-height: 1.8; margin-bottom: 12px; }
+  .about-links { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .about-link {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--text-sub); text-decoration: none; font-size: 13.5px;
+    transition: color .2s;
+  }
+  .about-link:hover { color: var(--teal-400); }
+  .about-profile {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; text-align: center;
+  }
+  .profile-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-700), var(--green-500));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 16px;
+  }
+  .about-profile h3 { font-size: 17px; font-weight: 700; }
+  .about-profile .role {
+    font-size: 12px; color: var(--teal-400); font-weight: 600;
+    margin: 4px 0 12px; letter-spacing: 0.3px;
+  }
+  .about-profile p { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; justify-content: center; }
+  .tag {
+    background: rgba(26,127,90,0.15); border: 1px solid rgba(26,127,90,0.3);
+    border-radius: 6px; padding: 3px 10px;
+    font-size: 11px; color: var(--green-400); font-weight: 600;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-800);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  footer p { font-size: 13px; color: var(--text-sub); }
+  footer a { color: var(--teal-400); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .screen-preview, .about-grid { grid-template-columns: 1fr; }
+    .about-grid { gap: 24px; }
+    .download-box { padding: 36px 20px; }
+    .hero { padding-top: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-icon">🗺️</div>
+    <div class="nav-name"><span>BorneoGIS</span> PDF Map</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Fitur</a></li>
+    <li><a href="#screenshots">Preview</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#docs">Dokumentasi</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#download" class="nav-cta">Download APK</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Elite Edition by Lamri — v1.0.0
+  </div>
+  <h1>
+    <span class="brand">BorneoGIS</span><br>
+    PDF Map
+  </h1>
+  <p class="hero-subtitle">
+    Aplikasi Android profesional untuk membuka dan menavigasi peta GeoPDF secara offline,
+    dengan GPS real-time langsung di atas peta.
+  </p>
+  <div class="hero-buttons">
+    <a href="#download" class="btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      </svg>
+      Download Android APK
+    </a>
+    <a href="#features" class="btn-secondary">Lihat Fitur →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Offline</div></div>
+    <div class="stat"><div class="stat-num">±1m</div><div class="stat-label">GPS Presisi</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Format Koordinat</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Biaya Langganan</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div class="section-eyebrow">Fitur Utama</div>
+    <h2 class="section-title">Semua yang dibutuhkan<br>surveyor lapangan</h2>
+    <p class="section-desc">Dibangun sebagai alternatif Avenza Maps yang ringan, cepat, dan bebas berlangganan.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Buka GeoPDF Offline</h3>
+        <p>Buka file GeoPDF langsung dari penyimpanan Android. Tidak perlu koneksi internet sama sekali setelah instalasi.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h3>GPS Real-Time di Atas Peta</h3>
+        <p>Posisi GPS aktual ditampilkan sebagai titik tepat di atas GeoPDF, menggunakan data georeferencing dari file.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧭</div>
+        <h3>Kompas Magnetometer</h3>
+        <p>Kompas berputar mengikuti arah perangkat menggunakan sensor magnetometer bawaan, akurat dan real-time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>Koordinat Lengkap</h3>
+        <p>Latitude, Longitude (DD/DMS), UTM Easting, UTM Northing, dan Zona UTM tampil bersamaan di panel GPS.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⛰️</div>
+        <h3>Data GPS Penuh</h3>
+        <p>Elevasi, kecepatan, heading, dan akurasi GPS (±m) dengan indikator warna hijau/kuning/merah.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Crosshair Tengah Layar</h3>
+        <p>Tanda silang presisi di tengah layar untuk menentukan koordinat titik secara tepat saat navigasi.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔆</div>
+        <h3>Tema Light & Dark</h3>
+        <p>Dua tema tampilan untuk kondisi pencahayaan berbeda. Dark mode nyaman untuk penggunaan malam hari.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📂</div>
+        <h3>Riwayat File Terakhir</h3>
+        <p>Daftar file terakhir yang dibuka untuk akses cepat. Simpan hingga 20 entri secara otomatis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS / PREVIEW -->
+<section id="screenshots">
+  <div class="container">
+    <div class="section-eyebrow">Preview Aplikasi</div>
+    <h2 class="section-title">Panel GPS terintegrasi<br>langsung di atas peta</h2>
+
+    <div class="screen-preview">
+      <!-- Phone mockup -->
+      <div class="mockup-phone">
+        <div class="mockup-topbar">
+          <div class="mockup-brand">BorneoGIS PDF Map <br><span>Elite Edition by Lamri</span></div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span style="font-size:10px;color:#2ECC8F">● Georeferenced</span>
+          </div>
+        </div>
+        <div class="mockup-map">
+          <span class="map-grid-label" style="top:20px;left:16px">0°52'N</span>
+          <span class="map-grid-label" style="top:20px;right:16px">117°34'E</span>
+          <span class="map-grid-label" style="bottom:20px;left:16px">0°48'N</span>
+          <div class="crosshair"></div>
+          <div class="gps-dot"><div class="gps-dot-inner"></div></div>
+          <div class="compass-mockup">N</div>
+        </div>
+        <div class="gps-panel-mock">
+          <div class="gps-panel-handle"></div>
+          <div class="gps-status-row">
+            <div class="gps-dot-green"></div>
+            <span class="gps-status-text">GPS Aktif</span>
+            <span class="gps-accuracy">± 2.4 m</span>
+          </div>
+          <div class="coord-grid">
+            <div class="coord-cell">
+              <div class="coord-label">LATITUDE</div>
+              <div class="coord-value">0.847621° N</div>
+            </div>
+            <div class="coord-cell">
+              <div class="coord-label">LONGITUDE</div>
+              <div class="coord-value">117.582145° E</div>
+            </div>
+            <div class="coord-cell">
+              <div class="coord-label">UTM EASTING</div>
+              <div class="coord-value">549382.1</div>
+            </div>
+            <div class="coord-cell">
+              <div class="coord-label">UTM NORTHING</div>
+              <div class="coord-value">9393741.2</div>
+            </div>
+            <div class="coord-cell">
+              <div class="coord-label">ELEVASI</div>
+              <div class="coord-value">87.3 m</div>
+            </div>
+            <div class="coord-cell">
+              <div class="coord-label">HEADING</div>
+              <div class="coord-value">TL 47°</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coord description -->
+      <div class="coord-desc">
+        <h3>Data GPS lengkap,<br>terbaca sekilas</h3>
+        <ul class="coord-list">
+          <li>
+            <div class="icon">📌</div>
+            <div>
+              <strong>Latitude & Longitude</strong>
+              Format DD (Decimal Degrees) atau DMS, dapat diubah di pengaturan.
+            </div>
+          </li>
+          <li>
+            <div class="icon">📐</div>
+            <div>
+              <strong>UTM Easting & Northing</strong>
+              Konversi otomatis WGS84 ke UTM, zona terdeteksi otomatis berdasarkan posisi GPS.
+            </div>
+          </li>
+          <li>
+            <div class="icon">🟢</div>
+            <div>
+              <strong>Akurasi GPS dengan warna</strong>
+              Hijau &lt;5m, Kuning 5–10m, Merah &gt;10m. Langsung tahu kualitas sinyal.
+            </div>
+          </li>
+          <li>
+            <div class="icon">⛰️</div>
+            <div>
+              <strong>Elevasi, Kecepatan, Heading</strong>
+              Data sensor GPS lengkap tersedia di panel yang sama.
+            </div>
+          </li>
+          <li>
+            <div class="icon">⚠️</div>
+            <div>
+              <strong>Notifikasi di luar area peta</strong>
+              Peringatan otomatis jika posisi GPS berada di luar extent GeoPDF yang dibuka.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="container">
+    <div class="section-eyebrow">Download</div>
+    <h2 class="section-title">Gratis. Offline. Selamanya.</h2>
+    <p class="section-desc">Unduh APK dan install langsung di Android. Tidak perlu Google Play Store.</p>
+    <div class="download-box">
+      <h2>Download Android APK</h2>
+      <p>BorneoGIS PDF Map Elite Edition v1.0.0 — tersedia gratis untuk semua perangkat Android 5.0+</p>
+      <a href="borneogis-pdf-map-v1.0.0.apk" class="btn-primary" style="justify-content:center;font-size:17px;padding:16px 40px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        Download Android APK
+      </a>
+      <div class="download-meta">
+        <span>📱 Android 5.0 (Lollipop) ke atas</span>
+        <span>🔒 100% bebas iklan</span>
+        <span>📶 Tidak perlu internet</span>
+        <span>⚡ Ringan & cepat</span>
+      </div>
+    </div>
+    <div style="margin-top:20px;text-align:center;font-size:12.5px;color:var(--text-sub)">
+      Untuk menginstall APK di luar Play Store: Pengaturan → Keamanan → Izinkan sumber tidak dikenal
+    </div>
+  </div>
+</section>
+
+<!-- DOCUMENTATION -->
+<section id="docs">
+  <div class="container">
+    <div class="section-eyebrow">Dokumentasi</div>
+    <h2 class="section-title">Panduan penggunaan</h2>
+    <div class="docs-grid">
+      <div class="doc-card">
+        <div class="doc-card-icon">🚀</div>
+        <h3>Memulai</h3>
+        <p>Cara install APK, memberikan izin lokasi, dan membuka file GeoPDF pertama kali.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-icon">🗺️</div>
+        <h3>Membaca GeoPDF</h3>
+        <p>Cara kerja georeferencing GeoPDF, format yang didukung, dan cara mengekspor dari QGIS/ArcGIS.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-icon">📍</div>
+        <h3>GPS & Koordinat</h3>
+        <p>Penjelasan format DD, DMS, UTM, cara membaca akurasi GPS, dan tips meningkatkan sinyal.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-icon">⚙️</div>
+        <h3>Pengaturan</h3>
+        <p>Konfigurasi tema, format koordinat, satuan elevasi, dan pengaturan tampilan viewer.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-icon">🔧</div>
+        <h3>Troubleshooting</h3>
+        <p>Solusi masalah GPS tidak aktif, PDF tidak terbuka, peta tidak georeferenced, dan lainnya.</p>
+      </div>
+      <div class="doc-card">
+        <div class="doc-card-icon">💻</div>
+        <h3>Build dari Source</h3>
+        <p>Cara build sendiri APK dari source Flutter. Panduan lengkap untuk developer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">Pertanyaan yang sering ditanyakan</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Apa perbedaan BorneoGIS PDF Map dengan Avenza Maps?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Avenza Maps memiliki batas 3 peta gratis dan membutuhkan akun. BorneoGIS PDF Map sepenuhnya gratis, bebas akun, bebas iklan, dan tidak ada batasan jumlah peta. Khusus dirancang untuk kebutuhan lapangan di Kalimantan dan Indonesia.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Format GeoPDF apa yang didukung?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Mendukung GeoPDF standar OGC (GPTS/LPTS array), GeoPDF gaya USGS dengan XMP viewport metadata, dan GeoPDF gaya ESRI dengan LGI dict. File dari QGIS, ArcGIS, Global Mapper, dan software GIS lainnya umumnya kompatibel.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Apakah bisa membuka PDF biasa (bukan GeoPDF)?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Ya. PDF biasa bisa dibuka dan ditampilkan, tetapi fitur overlay GPS tidak tersedia karena tidak ada data georeferencing. Aplikasi akan menampilkan peringatan "No georef" di header viewer.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Zona UTM apa yang digunakan?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Konversi UTM menggunakan datum WGS84, zona dihitung otomatis berdasarkan koordinat GPS. Untuk Kalimantan Timur, umumnya berada di zona 50S atau 50N tergantung posisi relatif terhadap ekuator.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Apakah perlu koneksi internet?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Tidak sama sekali setelah instalasi. Semua fungsi — membuka peta, GPS, kompas, konversi koordinat — berjalan 100% offline. Aplikasi tidak melakukan koneksi internet dalam kondisi apapun.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Berapa spesifikasi minimum Android yang dibutuhkan?
+          <span class="faq-q-arrow">+</span>
+        </button>
+        <div class="faq-a">
+          Android 5.0 (API level 21) atau lebih baru. Untuk performa optimal, direkomendasikan Android 8.0+ dengan RAM minimal 2GB. Sensor GPS dan magnetometer dibutuhkan untuk fitur kompas (opsional).
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-eyebrow">About</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Dibuat oleh praktisi GIS lapangan</h2>
+        <p>
+          BorneoGIS PDF Map lahir dari kebutuhan nyata survei lapangan di wilayah terpencil Kalimantan,
+          di mana koneksi internet tidak tersedia dan aplikasi berbayar tidak terjangkau.
+        </p>
+        <p>
+          Dibangun dengan Flutter untuk performa native Android, menggunakan library PDF dan GPS terpercaya,
+          serta konversi UTM bawaan tanpa dependensi eksternal.
+        </p>
+        <div class="about-links">
+          <a class="about-link" href="https://lamri.vercel.app" target="_blank">🌐 lamri.vercel.app — Portfolio GIS</a>
+          <a class="about-link" href="https://borneogis.vercel.app" target="_blank">🗺️ borneogis.vercel.app — BorneoGIS Explorer</a>
+          <a class="about-link" href="https://github.com/jamurkampus/borneogis" target="_blank">📦 github.com/jamurkampus/borneogis</a>
+        </div>
+      </div>
+      <div class="about-profile">
+        <div class="profile-avatar">👤</div>
+        <h3>Lamri, S.P.</h3>
+        <div class="role">GIS Analyst & WebGIS Developer</div>
+        <p>Kaur Perencanaan, Desa Susuk Dalam<br>Kec. Sandaran, Kutai Timur, Kalimantan Timur</p>
+        <div class="tag-list">
+          <span class="tag">GIS</span>
+          <span class="tag">PostGIS</span>
+          <span class="tag">Flutter</span>
+          <span class="tag">Next.js</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">QGIS</span>
+          <span class="tag">GeoPDF</span>
+          <span class="tag">Leaflet.js</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    © 2025 Lamri — BorneoGIS PDF Map Elite Edition &nbsp;·&nbsp;
+    <a href="https://lamri.vercel.app">lamri.vercel.app</a> &nbsp;·&nbsp;
+    <a href="https://borneogis.vercel.app">borneogis.vercel.app</a>
+  </p>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>
